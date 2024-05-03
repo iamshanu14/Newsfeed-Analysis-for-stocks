@@ -11,7 +11,7 @@ from googleapiclient.discovery import build
 
 # Function to get stock symbol using Google's Gemini Pro API
 def get_stock_symbol(stock_name):
-    api_key = "AIzaSyDmSN7LUipOsDSFNe0Axwbo7adC5y2tFE0"  # Replace this with your actual Google API key
+    api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Google API key
     service = build("customsearch", "v1", developerKey=api_key)
     res = service.cse().list(
         q=stock_name + " stock symbol",
