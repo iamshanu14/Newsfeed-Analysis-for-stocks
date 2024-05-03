@@ -16,7 +16,7 @@ option = st.selectbox(
     ('Stock Predictions', 'Sentimental Analysis'))
 
 if option == 'Stock Predictions':
-    stock = st.text_input('Enter Stock Symbol', 'GOOG')
+    stock = st.text_input('Enter Stock Symbol', 'AAPL')
 
     
     start_date = st.date_input('Start Date', pd.Timestamp('2024-01-01'))
@@ -92,7 +92,7 @@ elif option == 'Sentimental Analysis':
     stock = st.text_input('Enter Your Stock', 'GOOG')
 
 
-    start_date = st.date_input('Start Date', pd.to_datetime('2012-01-01'))
+    start_date = st.date_input('Start Date', pd.to_datetime('2024-01-01'))
     end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
 
     googlenews = GoogleNews()
