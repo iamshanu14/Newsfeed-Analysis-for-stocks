@@ -11,13 +11,19 @@ from textblob import TextBlob
 # Load the pre-trained model
 model = load_model('Stock Predictions Model.keras')
 
-# Fetch stock symbols and names
-stock_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']  # Define your own list of symbols
-stock_info = {symbol: yf.Ticker(symbol).info for symbol in stock_symbols}
+# Function to fetch all stock symbols and names
+def fetch_all_stocks():
+    all_stocks = yf.Tickers('')
+    symbols = []
+    names = []
 
-# Extract symbols and names
-symbols = [info['symbol'] for info in stock_info.values()]
-names = [info['longName'] for info in stock_info.values()]
+    for stock in all_stocks.tickers:
+        symbols.append(stock.info['symbol'])
+        names.append(stock.info['longName'])
+
+    return symbols, names
+
+symbols, names = fetch_all_stocks()
 
 # Combine symbols and names for autocompletion
 stock_options = symbols + names
@@ -29,23 +35,19 @@ option = st.selectbox(
     ('Stock Predictions', 'Sentimental Analysis'))
 
 if option == 'Stock Predictions':
-    stock = st.text_input('Enter Stock Symbol or Name', '')
+    stock = st.text_input('Enter Stock Symbol or Name', '', autocomplete=stock_options)
 
     if stock:
         # Check if the input is a stock symbol
         selected_stock = None
-        for symbol, name in stock_info.items():
+        for symbol, name in zip(symbols, names):
             if stock.upper() == symbol:
                 selected_stock = symbol
                 break
-        
-        # Check if the input is a stock name
-        if not selected_stock:
-            for symbol, name in stock_info.items():
-                if stock.upper() == name.upper():
-                    selected_stock = symbol
-                    break
-        
+            elif stock.upper() == name.upper():
+                selected_stock = symbol
+                break
+
         if selected_stock:
             stock_symbol = selected_stock
 
@@ -118,24 +120,19 @@ if option == 'Stock Predictions':
             st.write("Please enter a valid stock symbol or name.")
 
 elif option == 'Sentimental Analysis':
-    st.title('Sentimental Analysis')
-    stock = st.text_input('Enter Stock Symbol or Name', '')
+    stock = st.text_input('Enter Stock Symbol or Name', '', autocomplete=stock_options)
 
     if stock:
         # Check if the input is a stock symbol
         selected_stock = None
-        for symbol, name in stock_info.items():
+        for symbol, name in zip(symbols, names):
             if stock.upper() == symbol:
                 selected_stock = symbol
                 break
-        
-        # Check if the input is a stock name
-        if not selected_stock:
-            for symbol, name in stock_info.items():
-                if stock.upper() == name.upper():
-                    selected_stock = symbol
-                    break
-        
+            elif stock.upper() == name.upper():
+                selected_stock = symbol
+                break
+
         if selected_stock:
             stock_symbol = selected_stock
 
