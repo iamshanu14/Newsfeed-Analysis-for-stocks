@@ -44,6 +44,25 @@ if option == 'Stock Predictions':
     fig1.update_layout(title='Price vs MA50', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig1)
 
+    st.subheader('Price vs MA50 vs MA100')
+    ma_100_days = data.Close.rolling(100).mean()
+
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(x=data.index, y=ma_100_days, mode='lines', name='MA100', line=dict(color='red')))
+    fig2.add_trace(go.Scatter(x=data.index, y=data.Close, mode='lines', name='Close', line=dict(color='green')))
+    fig2.update_layout(title='MA50 vs MA100', xaxis_title='Date', yaxis_title='Price')
+    st.plotly_chart(fig2)
+    
+    
+    st.subheader('Price vs MA100 vs MA200')
+    ma_200_days = data.Close.rolling(200).mean()
+
+    fig3 = go.Figure()
+    fig3.add_trace(go.Scatter(x=data.index, y=ma_200_days, mode='lines', name='MA200', line=dict(color='red')))
+    fig3.add_trace(go.Scatter(x=data.index, y=data.Close, mode='lines', name='Close', line=dict(color='green')))
+    fig3.update_layout(title='MA100 vs MA200', xaxis_title='Date', yaxis_title='Price')
+    st.plotly_chart(fig3)
+    
 
 
     x = []
