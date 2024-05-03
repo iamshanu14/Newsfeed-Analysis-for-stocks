@@ -43,11 +43,12 @@ if option == 'Stock Predictions':
             st.write("Found stock symbol:", stock_symbol)
         else:
             st.write("No matching stock found.")
-
-    start_date = st.date_input('Start Date', pd.Timestamp('2023-01-01'))
-    end_date = st.date_input('End Date', pd.Timestamp('2024-04-30'))
+            stock_symbol = None
 
     if stock_symbol:
+        start_date = st.date_input('Start Date', pd.Timestamp('2023-01-01'))
+        end_date = st.date_input('End Date', pd.Timestamp('2024-04-30'))
+
         data = yf.download(stock_symbol, start_date, end_date)
 
         st.subheader('Stock Data')
@@ -87,9 +88,6 @@ if option == 'Stock Predictions':
         fig3.update_layout(title='MA100 vs MA200', xaxis_title='Date', yaxis_title='Price')
         st.plotly_chart(fig3)
 
-        
-
-
         x = []
         y = []
 
@@ -123,11 +121,12 @@ elif option == 'Sentimental Analysis':
             st.write("Found stock symbol:", stock_symbol)
         else:
             st.write("No matching stock found.")
-
-    start_date = st.date_input('Start Date', pd.to_datetime('2023-01-01'))
-    end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
+            stock_symbol = None
 
     if stock_symbol:
+        start_date = st.date_input('Start Date', pd.to_datetime('2023-01-01'))
+        end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
+
         googlenews = GoogleNews()
         googlenews.search(stock_symbol)
         result = googlenews.result()
