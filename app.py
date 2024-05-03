@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from sklearn.preprocessing import MinMaxScaler
 from GoogleNews import GoogleNews
 from textblob import TextBlob
+import matplotlib.pyplot as plt
 model = load_model('Stock Predictions Model.keras')
 
 st.header('Stock Market Predictor')
