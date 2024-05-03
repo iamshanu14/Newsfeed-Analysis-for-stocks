@@ -19,7 +19,7 @@ if option == 'Stock Predictions':
     stock = st.text_input('Enter Stock Symbol', 'AAPL')
 
     
-    start_date = st.date_input('Start Date', pd.Timestamp('2024-01-01'))
+    start_date = st.date_input('Start Date', pd.Timestamp('2023-01-01'))
     end_date = st.date_input('End Date', pd.Timestamp('2024-04-30'))
 
     data = yf.download(stock, start_date, end_date)
