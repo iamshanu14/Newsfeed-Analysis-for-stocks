@@ -12,11 +12,12 @@ from textblob import TextBlob
 model = load_model('Stock Predictions Model.keras')
 
 # Fetch stock symbols and names
-stock_info = yf.Tickers('AAPL MSFT GOOGL AMZN').tickers
+stock_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN']  # Define your own list of symbols
+stock_info = {symbol: yf.Ticker(symbol).info for symbol in stock_symbols}
 
 # Extract symbols and names
-symbols = [stock_info[i].info['symbol'] for i in range(len(stock_info))]
-names = [stock_info[i].info['longName'] for i in range(len(stock_info))]
+symbols = [info['symbol'] for info in stock_info.values()]
+names = [info['longName'] for info in stock_info.values()]
 
 # Combine symbols and names for autocompletion
 stock_options = symbols + names
