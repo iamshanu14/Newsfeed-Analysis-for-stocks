@@ -89,10 +89,10 @@ if option == 'Stock Predictions':
 
 elif option == 'Sentimental Analysis':
     st.title('Sentimental Analysis')
-    stock = st.text_input('Enter Your Stock', 'GOOG')
+    stock = st.text_input('Enter Your Stock', 'AAPL')
 
 
-    start_date = st.date_input('Start Date', pd.to_datetime('2024-01-01'))
+    start_date = st.date_input('Start Date', pd.to_datetime('2023-01-01'))
     end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
 
     googlenews = GoogleNews()
