@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from GoogleNews import GoogleNews
 from textblob import TextBlob
 from googleapiclient.discovery import build
-
+model = load_model('Stock Predictions Model.keras')
 # Function to get stock symbol using Google's Gemini Pro API
 def get_stock_symbol(stock_name):
     api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Google API key
