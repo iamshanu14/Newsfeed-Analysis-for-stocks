@@ -13,23 +13,31 @@ from googleapiclient.discovery import build
 def get_stock_symbol(stock_name):
     api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Google API key
     cx = "4666e0eab971a4943"  # Replace this with your actual Custom Search Engine ID
-    service = build("customsearch", "v1", developerKey=api_key)
-    res = service.cse().list(
-        q=stock_name + " stock symbol",
-        cx=cx,
-    ).execute()
     
-    # Extracting the stock symbol from search results
-    if "items" in res:
-        for item in res["items"]:
-            snippet = item.get("snippet", "")
-            if "ticker" in snippet or "symbol" in snippet:
-                # Extracting the stock symbol from the snippet
-                parts = snippet.split()
-                for part in parts:
-                    if part.isupper() and len(part) <= 5:  # Assuming stock symbols are in uppercase and <= 5 characters
-                        return part
-    return None
+    try:
+        service = build("customsearch", "v1", developerKey=api_key)
+        res = service.cse().list(
+            q=stock_name + " stock symbol",
+            cx=cx,
+        ).execute()
+        
+        # Extracting the stock symbol from search results
+        if "items" in res:
+            for item in res["items"]:
+                snippet = item.get("snippet", "")
+                if "ticker" in snippet or "symbol" in snippet:
+                    # Extracting the stock symbol from the snippet
+                    parts = snippet.split()
+                    for part in parts:
+                        if part.isupper() and len(part) <= 5:  # Assuming stock symbols are in uppercase and <= 5 characters
+                            return part
+        return None
+    
+    except Exception as e:
+        # Print out the error details for debugging
+        print("An error occurred:", e)
+        return None
+
 
 # Load pre-trained stock prediction model
 model = load_model('Stock Predictions Model.keras')
