@@ -8,3 +8,4 @@ streamlit==1.17.0
 textblob==0.18.0.post0
 yfinance==0.2.38
 tensorflow
+google-api-python-client
