@@ -8,14 +8,15 @@ from sklearn.preprocessing import MinMaxScaler
 from GoogleNews import GoogleNews
 from textblob import TextBlob
 from googleapiclient.discovery import build
-model = load_model('Stock Predictions Model.keras')
-# Function to get stock symbol using Google's Gemini Pro API
+
+# Function to get stock symbol using Google's Custom Search Engine API
 def get_stock_symbol(stock_name):
     api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Google API key
+    cx = "4666e0eab971a4943"  # Replace this with your actual Custom Search Engine ID
     service = build("customsearch", "v1", developerKey=api_key)
     res = service.cse().list(
         q=stock_name + " stock symbol",
-        cx="4666e0eab971a4943",  # Replace this with your actual Custom Search Engine ID
+        cx=cx,
     ).execute()
     
     # Extracting the stock symbol from search results
