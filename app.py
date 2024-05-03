@@ -84,7 +84,7 @@ if option == 'Stock Predictions':
     fig4 = go.Figure()
     fig4.add_trace(go.Scatter(x=np.arange(len(predict)), y=predict[:,0], mode='lines', name='Original Price', line=dict(color='red')))
     fig4.add_trace(go.Scatter(x=np.arange(len(y)), y=y, mode='lines', name='Predicted Price', line=dict(color='green')))
-    fig4.update_layout(title='Original Price vs Predicted Price', xaxis_title='Date', yaxis_title='Price')
+    fig4.update_layout(title='Original Price vs Predicted Price', xaxis_title='Time', yaxis_title='Price')
     st.plotly_chart(fig4)
 
 elif option == 'Sentimental Analysis':
