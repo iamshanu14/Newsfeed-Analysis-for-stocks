@@ -7,37 +7,25 @@ import plotly.graph_objects as go
 from sklearn.preprocessing import MinMaxScaler
 from GoogleNews import GoogleNews
 from textblob import TextBlob
-from googleapiclient.discovery import build
+import requests  # Import requests library for making API calls
 
-# Function to get stock symbol using Google's Custom Search Engine API
+# Function to get stock symbol using Gemini Pro API
 def get_stock_symbol(stock_name):
-    api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Google API key
-    cx = "4666e0eab971a4943"  # Replace this with your actual Custom Search Engine ID
+    api_key = "AIzaSyAUC1O_OMbcBMhOxeefOe3FVPhsHUgQeOY"  # Replace this with your actual Gemini Pro API key
+    endpoint = "https://api.geminipro.com/lookup"  # Example endpoint, replace with actual Gemini Pro API endpoint
     
     try:
-        service = build("customsearch", "v1", developerKey=api_key)
-        res = service.cse().list(
-            q=stock_name + " stock symbol",
-            cx=cx,
-        ).execute()
+        response = requests.get(endpoint, params={"q": stock_name, "api_key": api_key})
+        data = response.json()
         
-        # Extracting the stock symbol from search results
-        if "items" in res:
-            for item in res["items"]:
-                snippet = item.get("snippet", "")
-                if "ticker" in snippet or "symbol" in snippet:
-                    # Extracting the stock symbol from the snippet
-                    parts = snippet.split()
-                    for part in parts:
-                        if part.isupper() and len(part) <= 5:  # Assuming stock symbols are in uppercase and <= 5 characters
-                            return part
-        return None
+        if "symbol" in data:
+            return data["symbol"]
+        else:
+            return None
     
     except Exception as e:
-        # Print out the error details for debugging
         print("An error occurred:", e)
         return None
-
 
 # Load pre-trained stock prediction model
 model = load_model('Stock Predictions Model.keras')
