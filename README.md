@@ -1,1 +1,1 @@
-# Newsfeed-Analysis-for-stocks
+# Newsfeed-Analysis-for-stocks Market Prediction
