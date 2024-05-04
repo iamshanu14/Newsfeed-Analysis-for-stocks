@@ -16,10 +16,10 @@ option = st.selectbox(
     ('Stock Predictions', 'Sentimental Analysis'))
 
 if option == 'Stock Predictions':
-    stock = st.text_input('Enter Stock Symbol', 'AAPL')
+    stock = st.text_input('Enter Stock Symbol', 'GOOG')
 
     
-    start_date = st.date_input('Start Date', pd.Timestamp('2023-01-01'))
+    start_date = st.date_input('Start Date', pd.Timestamp('2022-01-01'))
     end_date = st.date_input('End Date', pd.Timestamp('2024-04-30'))
 
     data = yf.download(stock, start_date, end_date)
@@ -61,7 +61,6 @@ if option == 'Stock Predictions':
     fig3.update_layout(title='MA100 vs MA200', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig3)
 
-        
 
 
     x = []
@@ -89,10 +88,10 @@ if option == 'Stock Predictions':
 
 elif option == 'Sentimental Analysis':
     st.title('Sentimental Analysis')
-    stock = st.text_input('Enter Your Stock', 'AAPL')
+    stock = st.text_input('Enter Your Stock', 'GOOG')
 
 
-    start_date = st.date_input('Start Date', pd.to_datetime('2023-01-01'))
+    start_date = st.date_input('Start Date', pd.to_datetime('2012-01-01'))
     end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
 
     googlenews = GoogleNews()
