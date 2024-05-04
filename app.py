@@ -6,58 +6,20 @@ import streamlit as st
 import plotly.graph_objects as go
 from sklearn.preprocessing import MinMaxScaler
 from GoogleNews import GoogleNews
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from textblob import TextBlob
+model = load_model('Stock Predictions Model.keras')
 
 st.header('Stock Market Predictor')
 
-model = load_model('Stock Predictions Model.keras')
-
 option = st.selectbox(
     'Choose an option:',
-    ('Stock Predictions', 'Sentiment Analysis'))
+    ('Stock Predictions', 'Sentimental Analysis'))
 
-if option == 'Sentiment Analysis':
-    st.title('Sentiment Analysis')
-    stock1 = st.text_input('Enter Your Stock', 'AAPL')
-    start_date1 = st.date_input('Start Date', pd.to_datetime('2012-01-01'))
-    end_date1 = st.date_input('End Date', pd.to_datetime('2024-04-30'))
+if option == 'Stock Predictions':
+    stock = st.text_input('Enter Stock Symbol', 'AAPL')
 
-    googlenews = GoogleNews()
-    googlenews.search(stock1)
-    result = googlenews.result()
-    news_text = ''
-    for res in result:
-        news_text += res['title'] + '\n'
-    st.subheader('News')
-    st.write(news_text)
     
-    # Vader sentiment analysis
-    analyzer = SentimentIntensityAnalyzer()
-    sentiment_scores = analyzer.polarity_scores(news_text)
-    
-    st.subheader('Sentiment Analysis Result')
-    if sentiment_scores['compound'] >= 0.05:
-        st.write('Overall sentiment: Positive')
-        st.write('Verdict: Investable')
-    elif sentiment_scores['compound'] <= -0.05:
-        st.write('Overall sentiment: Negative')
-        st.write('Verdict: Not Investable')
-    else:
-        st.write('Overall sentiment: Neutral')
-        st.write('Verdict: Neutral')
-    
-    # Stock price movement
-    data = yf.download(stock1, start_date1, end_date1)
-    fig_stock = go.Figure()
-    fig_stock.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Stock Price'))
-    fig_stock.update_layout(title='Stock Price Movement', xaxis_title='Date', yaxis_title='Price')
-    st.plotly_chart(fig_stock)
-
-elif option == 'Stock Predictions':
-    st.title('Stock Predictions')
-    stock = st.text_input('Enter Stock Symbol', 'GOOG')
-    start_date = st.date_input('Start Date', pd.Timestamp('2022-01-01'))
+    start_date = st.date_input('Start Date', pd.Timestamp('2023-01-01'))
     end_date = st.date_input('End Date', pd.Timestamp('2024-04-30'))
 
     data = yf.download(stock, start_date, end_date)
@@ -99,6 +61,9 @@ elif option == 'Stock Predictions':
     fig3.update_layout(title='MA100 vs MA200', xaxis_title='Date', yaxis_title='Price')
     st.plotly_chart(fig3)
 
+        
+
+
     x = []
     y = []
 
@@ -115,8 +80,45 @@ elif option == 'Stock Predictions':
     predict = predict * scale
     y = y * scale
 
+    
     fig4 = go.Figure()
     fig4.add_trace(go.Scatter(x=np.arange(len(predict)), y=predict[:,0], mode='lines', name='Original Price', line=dict(color='red')))
     fig4.add_trace(go.Scatter(x=np.arange(len(y)), y=y, mode='lines', name='Predicted Price', line=dict(color='green')))
     fig4.update_layout(title='Original Price vs Predicted Price', xaxis_title='Time', yaxis_title='Price')
     st.plotly_chart(fig4)
+
+elif option == 'Sentimental Analysis':
+    st.title('Sentimental Analysis')
+    stock = st.text_input('Enter Your Stock', 'AAPL')
+
+
+    start_date = st.date_input('Start Date', pd.to_datetime('2023-01-01'))
+    end_date = st.date_input('End Date', pd.to_datetime('2024-04-30'))
+
+    googlenews = GoogleNews()
+    googlenews.search(stock)
+    result = googlenews.result()
+    news_text = ''
+    for res in result:
+        news_text += res['title'] + '\n'
+    st.subheader('News')
+    st.write(news_text)
+    blob = TextBlob(news_text)
+    sentiment_score = blob.sentiment.polarity
+    st.subheader('Sentiment Analysis Result')
+    if sentiment_score > 0:
+        st.write('Overall sentiment: Positive')
+        st.write('Verdict: Investable')
+    elif sentiment_score < 0:
+        st.write('Overall sentiment: Negative')
+        st.write('Verdict: Not Investable')
+    else:
+        st.write('Overall sentiment: Neutral')
+        st.write('Verdict: Neutral')
+
+   
+    data = yf.download(stock, start_date, end_date)
+    fig_stock = go.Figure()
+    fig_stock.add_trace(go.Scatter(x=data.index, y=data['Close'], mode='lines', name='Stock Price'))
+    fig_stock.update_layout(title='Stock Price Movement', xaxis_title='Date', yaxis_title='Price')
+    st.plotly_chart(fig_stock)
